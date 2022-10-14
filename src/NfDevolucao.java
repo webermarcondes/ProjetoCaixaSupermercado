@@ -1,0 +1,2 @@
+public class NfDevolucao {
+}
