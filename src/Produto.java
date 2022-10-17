@@ -19,7 +19,8 @@ public class Produto {
     private Desconto desconto;
 
     public Produto(Integer idProduto, String descricao, Integer codigoBarras, BigDecimal valor, String tipoProduto
-    , String marcaProduto, Integer cfop, Integer cst, Integer ncm, Integer icms, String unidade, Categoria categoria) {
+    , String marcaProduto, Integer cfop, Integer cst, Integer ncm, Integer icms, String unidade, Categoria categoria,
+                   Desconto desconto) {
 
         this.idProduto = idProduto;
         this.descricao = descricao;
@@ -132,4 +133,24 @@ public class Produto {
     public Desconto getDesconto() {return desconto;}
 
     public void setDesconto(Desconto desconto) {this.desconto = desconto;}
+
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "idProduto=" + idProduto +
+                ", descricao='" + descricao + '\'' +
+                ", codigoBarras=" + codigoBarras +
+                ", valor=" + valor +
+                ", tipoProduto='" + tipoProduto + '\'' +
+                ", marcaProduto='" + marcaProduto + '\'' +
+                ", cfop=" + cfop +
+                ", cst=" + cst +
+                ", ncm=" + ncm +
+                ", icms=" + icms +
+                ", unidade='" + unidade + '\'' +
+                ", categoria=" + categoria +
+                ", desconto=" + desconto +
+                '}';
+    }
 }
