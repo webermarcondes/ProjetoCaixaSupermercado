@@ -1,12 +1,19 @@
 import java.time.LocalDate;
 
-public class Funcionario {
+public class Funcionario extends PessoaFisica{
 
     private Integer idFuncionario;
-    private String nome;
-    private String cpf;
+
     private LocalDate dataAdmissao;
     private String numeroNis;
+
+    public Funcionario(String nome, String telefone, String email, Endereco endereco, String cpf, LocalDate dataNascimento,
+                       Integer idFuncionario ,LocalDate dataAdmissao, String numeroNis) {
+        super(nome, telefone, email, endereco, cpf, dataNascimento);
+        this.idFuncionario = idFuncionario;
+        this.dataAdmissao = dataAdmissao;
+        this.numeroNis = numeroNis;
+    }
 
     public Integer getIdFuncionario() {
         return idFuncionario;
@@ -16,21 +23,6 @@ public class Funcionario {
         this.idFuncionario = idFuncionario;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public LocalDate getDataAdmissao() {
         return dataAdmissao;

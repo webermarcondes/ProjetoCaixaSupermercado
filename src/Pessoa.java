@@ -4,10 +4,26 @@ public class Pessoa {
     private String telefone;
     private String email;
 
+    private Endereco endereco;
+
+    //private String tipo;
+
+
+    public Pessoa(String nome, String telefone, String email, Endereco endereco) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.endereco = endereco;
+        this.email = email;
+        //this.tipo = tipo;
+
+    }
+
+
+
     //Atributos fiscais:
-    private String finalidade;
-    private String consumidorFinal;
-    private String contribuinteIcms;
+//    private String finalidade;
+//    private String consumidorFinal;
+//    private String contribuinteIcms;
 
     public String getNome() {
         return nome;
@@ -33,27 +49,43 @@ public class Pessoa {
         this.email = email;
     }
 
-    public String getFinalidade() {
-        return finalidade;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setFinalidade(String finalidade) {
-        this.finalidade = finalidade;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
-    public String getConsumidorFinal() {
-        return consumidorFinal;
+    public String getDocumentoPrincipal() {
+        return "";
     }
 
-    public void setConsumidorFinal(String consumidorFinal) {
-        this.consumidorFinal = consumidorFinal;
-    }
+//    public String getTipo() {
+//        return tipo;
+//    }
 
-    public String getContribuinteIcms() {
-        return contribuinteIcms;
-    }
-
-    public void setContribuinteIcms(String contribuinteIcms) {
-        this.contribuinteIcms = contribuinteIcms;
-    }
+//    public String getFinalidade() {
+//        return finalidade;
+//    }
+//
+//    public void setFinalidade(String finalidade) {
+//        this.finalidade = finalidade;
+//    }
+//
+//    public String getConsumidorFinal() {
+//        return consumidorFinal;
+//    }
+//
+//    public void setConsumidorFinal(String consumidorFinal) {
+//        this.consumidorFinal = consumidorFinal;
+//    }
+//
+//    public String getContribuinteIcms() {
+//        return contribuinteIcms;
+//    }
+//
+//    public void setContribuinteIcms(String contribuinteIcms) {
+//        this.contribuinteIcms = contribuinteIcms;
+//    }
 }
