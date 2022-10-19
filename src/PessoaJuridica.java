@@ -3,10 +3,13 @@ public class PessoaJuridica extends Pessoa {
     private String razaoSocial;
     private String cnpj;
 
-    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco ,String razaoSocial, String cnpj) {
+    private String inscricaoEstadual;
+
+    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco ,String razaoSocial, String cnpj, String inscricaoEstadual) {
         super(nome, telefone, email, endereco);
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
     public String getRazaoSocial() {
@@ -23,6 +26,15 @@ public class PessoaJuridica extends Pessoa {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+
+    public String getInscricaoEstadual() {
+        return inscricaoEstadual;
+    }
+
+    public void setInscricaoEstadual(String inscricaoEstadual) {
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
     @Override

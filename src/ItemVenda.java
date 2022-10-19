@@ -3,11 +3,11 @@ import java.math.BigDecimal;
 public class ItemVenda {
 
     private Produto produto;
-    private BigDecimal valor;
+    private Double valor;
     private Double qtde;
 
 
-    public ItemVenda(Produto produto, BigDecimal valor, Double qtde) {
+    public ItemVenda(Produto produto, Double valor, Double qtde) {
         this.produto = produto;
         this.valor = valor;
         this.qtde = qtde;
@@ -22,11 +22,11 @@ public class ItemVenda {
         this.produto = produto;
     }
 
-    public BigDecimal getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

@@ -13,17 +13,10 @@ public class NotaFiscal {
     private String dadosAdicionais;
     private Integer serie;
 
-    private Produto produto;
+    private Transportador transportador;
 
-    //Atributos transportador
-    private String razaoSocialTransportador;
-    private String tipoFrete;
-    private String placaVeiculo;
-    private String uf;
-    private String cnpjTransportador;
-    private String inscricaoEstadualTransp;
-    private String endereco;
-    private String municipio;
+
+
     private BigDecimal pesoBruto;
 
     public Integer getSerie() {
@@ -34,13 +27,7 @@ public class NotaFiscal {
         this.serie = serie;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
 
     public Integer getInscricaoEstadual() {
         return inscricaoEstadual;
@@ -98,75 +85,15 @@ public class NotaFiscal {
         this.dadosAdicionais = dadosAdicionais;
     }
 
-    public String getRazaoSocialTransportador() {
-        return razaoSocialTransportador;
+    public Transportador getTransportador() {
+        return transportador;
     }
 
-    public void setRazaoSocialTransportador(String razaoSocialTransportador) {
-        this.razaoSocialTransportador = razaoSocialTransportador;
+    public void setTransportador(Transportador transportador) {
+        this.transportador = transportador;
     }
 
-    public String getTipoFrete() {
-        return tipoFrete;
-    }
 
-    public void setTipoFrete(String tipoFrete) {
-        this.tipoFrete = tipoFrete;
-    }
-
-    public String getPlacaVeiculo() {
-        return placaVeiculo;
-    }
-
-    public void setPlacaVeiculo(String placaVeiculo) {
-        this.placaVeiculo = placaVeiculo;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
-    public String getCnpjTransportador() {
-        return cnpjTransportador;
-    }
-
-    public void setCnpjTransportador(String cnpjTransportador) {
-        this.cnpjTransportador = cnpjTransportador;
-    }
-
-    public String getInscricaoEstadualTransp() {
-        return inscricaoEstadualTransp;
-    }
-
-    public void setInscricaoEstadualTransp(String inscricaoEstadualTransp) {
-        this.inscricaoEstadualTransp = inscricaoEstadualTransp;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getMunicipio() {
-        return municipio;
-    }
-
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
-    }
-
-    public BigDecimal getPesoBruto() {
-        return pesoBruto;
-    }
-
-    public void setPesoBruto(BigDecimal pesoBruto) {
-        this.pesoBruto = pesoBruto;
-    }
 }
+
+

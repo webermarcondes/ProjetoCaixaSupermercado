@@ -52,7 +52,7 @@ public class Cliente {
         return pessoa.getDocumentoPrincipal();
     }
 
-    public String getEnderecoCliente() {
-        return pessoa.getEndereco().toString();
+    public Endereco getEnderecoCliente() {
+        return pessoa.getEndereco();
     }
 }
