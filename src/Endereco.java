@@ -4,7 +4,21 @@ public class Endereco {
     private String complemento;
     private String bairro;
     private String cidade;
+
+    private String municipio;
+
+    private String uf;
     private Integer numero;
+
+    public Endereco(String cep, String complemento, String bairro, String cidade, String municipio, String uf ,Integer numero) {
+        this.cep = cep;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.municipio = municipio;
+        this.uf = uf;
+        this.numero = numero;
+    }
 
     public String getCep() {
         return cep;
@@ -44,5 +58,17 @@ public class Endereco {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "cep='" + cep + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", numero=" + numero +
+                '}';
     }
 }

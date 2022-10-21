@@ -1,12 +1,29 @@
 import java.time.LocalDate;
 
-public class Funcionario {
+public class Funcionario{
 
     private Integer idFuncionario;
-    private String nome;
-    private String cpf;
+
+    private PessoaFisica pessoaFisica;
+
     private LocalDate dataAdmissao;
     private String numeroNis;
+
+    public Funcionario(PessoaFisica pessoaFisica,
+                       Integer idFuncionario ,LocalDate dataAdmissao, String numeroNis) {
+        this.pessoaFisica = pessoaFisica;
+        this.idFuncionario = idFuncionario;
+        this.dataAdmissao = dataAdmissao;
+        this.numeroNis = numeroNis;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
 
     public Integer getIdFuncionario() {
         return idFuncionario;
@@ -16,21 +33,6 @@ public class Funcionario {
         this.idFuncionario = idFuncionario;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public LocalDate getDataAdmissao() {
         return dataAdmissao;
