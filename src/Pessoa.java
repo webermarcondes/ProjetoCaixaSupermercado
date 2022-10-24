@@ -19,6 +19,8 @@ public class Pessoa {
     }
 
 
+    public Pessoa() {}
+
 
     //Atributos fiscais:
 //    private String finalidade;
