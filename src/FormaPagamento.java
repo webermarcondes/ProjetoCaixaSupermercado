@@ -1,8 +1,6 @@
 public enum FormaPagamento {
 
-    CARTAO,
-    DINHEIRO,
-    CHEQUE;
+    CARTAO ,DINHEIRO, CHEQUE;
 
 
     private Double valor;

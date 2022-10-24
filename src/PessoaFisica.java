@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 
+
 public class PessoaFisica extends Pessoa {
 
     private String cpf;
@@ -10,6 +11,8 @@ public class PessoaFisica extends Pessoa {
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
     }
+
+    public PessoaFisica() {}
 
 
     public String getCpf() {

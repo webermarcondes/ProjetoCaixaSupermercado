@@ -26,6 +26,10 @@ public class Venda {
 
     }
 
+    public Venda() {
+
+    }
+
     public Integer getCodigoVenda() {
         return codigoVenda;
     }

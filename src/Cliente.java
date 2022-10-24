@@ -17,9 +17,6 @@ public class Cliente {
     }
 
 
-
-
-
     public String getFinalidade() {
         return finalidade;
     }
@@ -44,9 +41,7 @@ public class Cliente {
         this.contribuinteIcms = contribuinteIcms;
     }
 
-//    public String getTipoCliente() {
-//        return pessoa.getTipo();
-//    }
+
 
     public String getDocumentoPrincipalCliente() {
         return pessoa.getDocumentoPrincipal();

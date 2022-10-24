@@ -17,6 +17,10 @@ public class Funcionario{
         this.numeroNis = numeroNis;
     }
 
+    public Funcionario() {
+
+    }
+
     public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
     }
