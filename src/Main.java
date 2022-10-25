@@ -51,16 +51,24 @@ public class Main {
             String[] opcoesCadastroCliente = {"Sim", "Não"};
             int op = JOptionPane.showOptionDialog(null, "O cliente possui cadastro?", "Dados do cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
 
-            TipoPessoa[] tiposPessoa = TipoPessoa.values();
-            TipoPessoa tipoPessoa = TipoPessoa.getTipobyId(JOptionPane.showOptionDialog(null, "Selecione o tipo de cliente Atendido", "Tipo de cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,null , tiposPessoa, tiposPessoa[0]));
+
 
             if(op == 0) {
                 System.out.println("sim");
+                int op1 =  JOptionPane.showOptionDialog(null, "O cliente deseja utilizar seu cadastro na venda", "a", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
             }
 
             else if (op == 1) {
 
+
+
+
+                TipoPessoa[] tiposPessoa = TipoPessoa.values();
+                TipoPessoa tipoPessoa = TipoPessoa.getTipobyId(JOptionPane.showOptionDialog(null, "Selecione o tipo de cliente Atendido", "Tipo de cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,null , tiposPessoa, tiposPessoa[0]));
+
+
                 Endereco enderecoCliente = new Endereco();
+                Pessoa pessoa = new Pessoa();
                 if (tipoPessoa == TipoPessoa.PESSOA_FISICA) {
                     PessoaFisica pf = new PessoaFisica();
 
@@ -73,12 +81,34 @@ public class Main {
                     pf.setDataNascimento(LocalDate.parse(JOptionPane.showInputDialog(null,"Digite a data de Nascimento do cliente (dd/mm/yyyy)", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE),
                             DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-
+                    pessoa = pf;
                 }
 
                 else if (tipoPessoa == TipoPessoa.PESSOA_JURIDICA) {
-                    System.out.println("");
+                    PessoaJuridica pj = new PessoaJuridica();
+
+
+                    pj.setNome(JOptionPane.showInputDialog(null, "Digite o nome do Cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    pj.setCnpj(JOptionPane.showInputDialog(null, "Digite o Cnpj do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    pj.setTelefone(JOptionPane.showInputDialog(null, "Digite o Telefone do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    pj.setEmail(JOptionPane.showInputDialog(null, "Digite o E-mail do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    pj.setInscricaoEstadual(JOptionPane.showInputDialog(null, "Digite a inscrição Estadual do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    pj.setRazaoSocial(JOptionPane.showInputDialog(null, "Digite a razão social do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+
+                    pessoa = pj;
+
                 }
+
+
+                enderecoCliente.setCep(JOptionPane.showInputDialog(null,"Digite o cep do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                enderecoCliente.setComplemento(JOptionPane.showInputDialog(null,"Digite o complemento do endereço do cliente", "Endereço do cliente",JOptionPane.QUESTION_MESSAGE));
+                enderecoCliente.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro do cliente", "Endereço do cliente",JOptionPane.QUESTION_MESSAGE));
+                enderecoCliente.setCidade(JOptionPane.showInputDialog(null, "Digite a cidade do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                enderecoCliente.setMunicipio(JOptionPane.showInputDialog(null, "digite o nome do municipio do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+
+                String[] ufs = {"SC", "SP", "RS"};
+                JOptionPane.showInputDialog(null ,"Selecione a UF do cliente", "Endereço do cliente", JOptionPane.INFORMATION_MESSAGE, null, ufs, ufs[0]);
+
 
 
 
