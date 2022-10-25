@@ -12,6 +12,8 @@ public class PessoaJuridica extends Pessoa {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
+    public PessoaJuridica() {}
+
     public String getRazaoSocial() {
         return razaoSocial;
     }
