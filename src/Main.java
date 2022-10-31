@@ -1,6 +1,10 @@
+import java.sql.Array;
 import java.time.LocalDate;
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -42,97 +46,95 @@ public class Main {
             } while (!usuario.equals(login.getUsuario()) || !senha.equals(login.getSenha()));
 
 
+            int selecao = Integer.parseInt(JOptionPane.showInputDialog(null, "Selecione a opção:\n 1- Cadastro\n 2- Venda", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+            if (selecao == 1) {
+                // identificação do cliente
+
+                String[] opcoesCadastroCliente = {"Sim", "Não"};
+                int op = JOptionPane.showOptionDialog(null, "O cliente possui cadastro?", "Dados do cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
 
 
-            // identificação do cliente
+                if (op == 0) {
+                    System.out.println("sim");
+                    int op1 = JOptionPane.showOptionDialog(null, "O cliente deseja utilizar seu cadastro na venda", "a", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
+                } else if (op == 1) {
+
+                    TipoPessoa[] tiposPessoa = TipoPessoa.values();
+                    TipoPessoa tipoPessoa = TipoPessoa.getTipobyId(JOptionPane.showOptionDialog(null, "Selecione o tipo de cliente Atendido", "Tipo de cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, tiposPessoa, tiposPessoa[0]));
 
 
-
-            String[] opcoesCadastroCliente = {"Sim", "Não"};
-            int op = JOptionPane.showOptionDialog(null, "O cliente possui cadastro?", "Dados do cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
-
-
-
-            if(op == 0) {
-                System.out.println("sim");
-                int op1 =  JOptionPane.showOptionDialog(null, "O cliente deseja utilizar seu cadastro na venda", "a", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesCadastroCliente, opcoesCadastroCliente[0]);
-            }
-
-            else if (op == 1) {
+                    Endereco enderecoCliente = new Endereco();
+                    Pessoa pessoa = new Pessoa();
+                    if (tipoPessoa == TipoPessoa.PESSOA_FISICA) {
+                        PessoaFisica pf = new PessoaFisica();
 
 
+                        pf.setNome(JOptionPane.showInputDialog(null, "Digite o nome do Cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pf.setCpf(JOptionPane.showInputDialog(null, "Digite o cpf do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pf.setTelefone(JOptionPane.showInputDialog(null, "Digite o Telefone do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pf.setEmail(JOptionPane.showInputDialog(null, "Digite o E-mail do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+
+                        pf.setDataNascimento(LocalDate.parse(JOptionPane.showInputDialog(null, "Digite a data de Nascimento do cliente (dd/mm/yyyy)", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE),
+                                DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+                        pessoa = pf;
+                    } else if (tipoPessoa == TipoPessoa.PESSOA_JURIDICA) {
+                        PessoaJuridica pj = new PessoaJuridica();
 
 
-                TipoPessoa[] tiposPessoa = TipoPessoa.values();
-                TipoPessoa tipoPessoa = TipoPessoa.getTipobyId(JOptionPane.showOptionDialog(null, "Selecione o tipo de cliente Atendido", "Tipo de cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,null , tiposPessoa, tiposPessoa[0]));
+                        pj.setNome(JOptionPane.showInputDialog(null, "Digite o nome do Cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pj.setCnpj(JOptionPane.showInputDialog(null, "Digite o Cnpj do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pj.setTelefone(JOptionPane.showInputDialog(null, "Digite o Telefone do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pj.setEmail(JOptionPane.showInputDialog(null, "Digite o E-mail do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pj.setInscricaoEstadual(JOptionPane.showInputDialog(null, "Digite a inscrição Estadual do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
+                        pj.setRazaoSocial(JOptionPane.showInputDialog(null, "Digite a razão social do cliente", "Cadastro do cliente", JOptionPane.QUESTION_MESSAGE));
 
+                        pessoa = pj;
 
-                Endereco enderecoCliente = new Endereco();
-                Pessoa pessoa = new Pessoa();
-                if (tipoPessoa == TipoPessoa.PESSOA_FISICA) {
-                    PessoaFisica pf = new PessoaFisica();
+                    }
 
+                    enderecoCliente.setCep(JOptionPane.showInputDialog(null, "Digite o cep do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                    enderecoCliente.setComplemento(JOptionPane.showInputDialog(null, "Digite o complemento do endereço do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                    enderecoCliente.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                    enderecoCliente.setCidade(JOptionPane.showInputDialog(null, "Digite a cidade do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
+                    enderecoCliente.setMunicipio(JOptionPane.showInputDialog(null, "digite o nome do municipio do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
 
-                    pf.setNome(JOptionPane.showInputDialog(null, "Digite o nome do Cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pf.setCpf(JOptionPane.showInputDialog(null, "Digite o cpf do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pf.setTelefone(JOptionPane.showInputDialog(null, "Digite o Telefone do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pf.setEmail(JOptionPane.showInputDialog(null, "Digite o E-mail do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                    String[] ufs = {"SC", "SP", "RS"};
+                    JOptionPane.showInputDialog(null, "Selecione a UF do cliente", "Endereço do cliente", JOptionPane.INFORMATION_MESSAGE, null, ufs, ufs[0]);
 
-                    pf.setDataNascimento(LocalDate.parse(JOptionPane.showInputDialog(null,"Digite a data de Nascimento do cliente (dd/mm/yyyy)", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE),
-                            DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
-                    pessoa = pf;
                 }
+            }else if (selecao == 2){
 
-                else if (tipoPessoa == TipoPessoa.PESSOA_JURIDICA) {
-                    PessoaJuridica pj = new PessoaJuridica();
+                List<ItemVenda> itemVenda = new ArrayList<>() ;
+                List <Produto> produto = new ArrayList<>();
+                produto.add(new Produto(20, "Top", 80.00));
+                produto.add(new Produto(30, "Loco", 70.00));
+                produto.add(new Produto(40, "Baludo", 60.00));
+
+                int adicionarProduto;
+                do{
+                     adicionarProduto = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o código do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
+                for (Produto verificaExistencia : produto) {
+                   if (verificaExistencia.getIdProduto().equals(adicionarProduto)) {
+                       itemVenda.add(new ItemVenda(produto));
 
 
-                    pj.setNome(JOptionPane.showInputDialog(null, "Digite o nome do Cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pj.setCnpj(JOptionPane.showInputDialog(null, "Digite o Cnpj do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pj.setTelefone(JOptionPane.showInputDialog(null, "Digite o Telefone do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pj.setEmail(JOptionPane.showInputDialog(null, "Digite o E-mail do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pj.setInscricaoEstadual(JOptionPane.showInputDialog(null, "Digite a inscrição Estadual do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
-                    pj.setRazaoSocial(JOptionPane.showInputDialog(null, "Digite a razão social do cliente", "Cadastro do cliente",JOptionPane.QUESTION_MESSAGE));
+                   }
+               }CupomFiscal cupomFiscal = new CupomFiscal(itemVenda);
+                    System.out.println(cupomFiscal);
+                }while(adicionarProduto != 1010);
 
-                    pessoa = pj;
+
+
+            }else if (selecao == 3){
+                    Produto cadastroProduto = new Produto();
+
 
                 }
-
-
-                enderecoCliente.setCep(JOptionPane.showInputDialog(null,"Digite o cep do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
-                enderecoCliente.setComplemento(JOptionPane.showInputDialog(null,"Digite o complemento do endereço do cliente", "Endereço do cliente",JOptionPane.QUESTION_MESSAGE));
-                enderecoCliente.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro do cliente", "Endereço do cliente",JOptionPane.QUESTION_MESSAGE));
-                enderecoCliente.setCidade(JOptionPane.showInputDialog(null, "Digite a cidade do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
-                enderecoCliente.setMunicipio(JOptionPane.showInputDialog(null, "digite o nome do municipio do cliente", "Endereço do cliente", JOptionPane.QUESTION_MESSAGE));
-
-                String[] ufs = {"SC", "SP", "RS"};
-                JOptionPane.showInputDialog(null ,"Selecione a UF do cliente", "Endereço do cliente", JOptionPane.INFORMATION_MESSAGE, null, ufs, ufs[0]);
-
-
-
-
-
-            }
-
-
-
-
-
-
-
-
-
-        }
-
 
         else if (x == 1) { //saida do sistema
             System.out.println("saindo");
+            }
         }
-
-
-
-
-
     }
 }

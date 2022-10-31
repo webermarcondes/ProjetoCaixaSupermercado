@@ -5,7 +5,7 @@ public class Produto {
     private Integer idProduto;
     private String descricao;
     private Integer codigoBarras;
-    private BigDecimal valor;
+    private Double valor;
     private String tipoProduto;
     private String marcaProduto;
     private Integer cfop;
@@ -18,8 +18,18 @@ public class Produto {
 
     private Desconto desconto;
 
-    public Produto(Integer idProduto, String descricao, Integer codigoBarras, BigDecimal valor, String tipoProduto
-    , String marcaProduto, Integer cfop, Integer cst, Integer ncm, Integer icms, String unidade, Categoria categoria,
+    public Produto (){
+
+    }
+
+    public Produto (Integer idProduto, String descicao, Double valor){
+        this.idProduto = idProduto;
+        this.descricao = descicao;
+        this.valor = valor;
+    }
+
+    public Produto(Integer idProduto, String descricao, Integer codigoBarras, Double valor, String tipoProduto,
+                   String marcaProduto, Integer cfop, Integer cst, Integer ncm, Integer icms, String unidade, Categoria categoria,
                    Desconto desconto) {
 
         this.idProduto = idProduto;
@@ -37,6 +47,9 @@ public class Produto {
         this.desconto = desconto;
     }
 
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
 
     public Integer getCfop() {
         return cfop;
@@ -100,14 +113,6 @@ public class Produto {
 
     public void setCodigoBarras(Integer codigoBarras) {
         this.codigoBarras = codigoBarras;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
     }
 
     public String getTipoProduto() {

@@ -1,24 +1,27 @@
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ItemVenda {
 
-    private Produto produto;
+    private List<Produto> produto;
     private Double valor;
     private Double qtde;
 
+    public ItemVenda(List<Produto> produto) {
+        this.produto = produto;
+    }
 
-    public ItemVenda(Produto produto, Double valor, Double qtde) {
+    public ItemVenda(List<Produto> produto, Double valor, Double qtde) {
         this.produto = produto;
         this.valor = valor;
         this.qtde = qtde;
     }
 
-
-    public Produto getProduto() {
+    public List<Produto> getProduto() {
         return produto;
     }
 
-    public void setProduto(Produto produto) {
+    public void setProduto(List<Produto> produto) {
         this.produto = produto;
     }
 
@@ -36,5 +39,14 @@ public class ItemVenda {
 
     public void setQtde(Double qtde) {
         this.qtde = qtde;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemVenda{" +
+                "produto=" + produto +
+                ", valor=" + valor +
+                ", qtde=" + qtde +
+                '}';
     }
 }

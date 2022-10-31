@@ -1,59 +1,19 @@
 import java.math.BigDecimal;
+import java.util.List;
 
 public class CupomFiscal {
 
-    private Integer codigoInterno;
-    private String descricao;
-    private Integer codigoBarra;
-    private BigDecimal valor;
-    private String tipo;
-    private String marca;
+    private List<ItemVenda> itemVenda;
 
-    public Integer getCodigoInterno() {
-        return codigoInterno;
+    public CupomFiscal(List<ItemVenda> itemVenda) {
+        this.itemVenda = itemVenda;
+
     }
 
-    public void setCodigoInterno(Integer codigoInterno) {
-        this.codigoInterno = codigoInterno;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Integer getCodigoBarra() {
-        return codigoBarra;
-    }
-
-    public void setCodigoBarra(Integer codigoBarra) {
-        this.codigoBarra = codigoBarra;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
+    @Override
+    public String toString() {
+        return "CupomFiscal{" +
+                "itemVenda=" + itemVenda +
+                '}';
     }
 }
