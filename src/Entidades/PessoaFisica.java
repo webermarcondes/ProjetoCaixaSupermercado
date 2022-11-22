@@ -1,6 +1,7 @@
 package Entidades;
 
 import Entidades.Pessoa;
+import Enums.TipoPessoa;
 
 import java.time.LocalDate;
 
@@ -10,14 +11,17 @@ public class PessoaFisica extends Pessoa {
     private String cpf;
     private LocalDate dataNascimento;
 
-    public PessoaFisica(String nome, String telefone, String email, Endereco endereco, String cpf, LocalDate dataNascimento) {
-        super(nome, telefone, email, endereco);
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-    }
 
     public PessoaFisica() {}
 
+    public PessoaFisica(String nome, String telefone, String email, Endereco endereco, String cpf,
+                        LocalDate dataNascimento) {
+
+        super(nome, telefone, email, endereco);
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+
+    }
 
     public String getCpf() {
         return cpf;
@@ -38,5 +42,15 @@ public class PessoaFisica extends Pessoa {
     @Override
     public String getDocumentoPrincipal() {
         return cpf;
+    }
+
+
+    @Override
+    public String toString() {
+        return "PessoaFisica{" +
+                super.toString() +
+                "cpf='" + cpf + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                '}';
     }
 }

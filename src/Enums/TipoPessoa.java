@@ -2,15 +2,15 @@ package Enums;
 
 public enum TipoPessoa {
 
-    PESSOA_FISICA, PESSOA_JURIDICA;
+    FISICA, JURIDICA;
 
     public static TipoPessoa getTipobyId(int id) {
         if(id == 0) {
-            return PESSOA_FISICA;
+            return FISICA;
         }
 
         else {
-            return PESSOA_JURIDICA;
+            return JURIDICA;
         }
     }
 }

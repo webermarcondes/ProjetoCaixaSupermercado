@@ -1,6 +1,9 @@
 package Entidades;
 
 import Entidades.Pessoa;
+import Enums.TipoPessoa;
+
+import java.time.LocalDate;
 
 public class PessoaJuridica extends Pessoa {
 
@@ -9,14 +12,20 @@ public class PessoaJuridica extends Pessoa {
 
     private String inscricaoEstadual;
 
-    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco , String razaoSocial, String cnpj, String inscricaoEstadual) {
+
+
+
+    public PessoaJuridica() {}
+
+    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco, String razaoSocial,
+                            String cnpj, String inscricaoEstadual) {
+
         super(nome, telefone, email, endereco);
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
         this.inscricaoEstadual = inscricaoEstadual;
-    }
 
-    public PessoaJuridica() {}
+    }
 
     public String getRazaoSocial() {
         return razaoSocial;
@@ -46,5 +55,15 @@ public class PessoaJuridica extends Pessoa {
     @Override
     public String getDocumentoPrincipal() {
         return cnpj;
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaJuridica{" +
+                super.toString() +
+                "razaoSocial='" + razaoSocial + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                ", inscricaoEstadual='" + inscricaoEstadual + '\'' +
+                '}';
     }
 }

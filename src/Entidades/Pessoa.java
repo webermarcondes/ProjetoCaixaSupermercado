@@ -1,6 +1,8 @@
 package Entidades;
 
-public class Pessoa {
+import Enums.TipoPessoa;
+
+public abstract class Pessoa {
 
     private String nome;
     private String telefone;
@@ -8,29 +10,20 @@ public class Pessoa {
 
     private Endereco endereco;
 
-    //private String tipo;
+    private TipoPessoa tipoPessoa;
 
 
     public Pessoa(String nome, String telefone, String email, Endereco endereco) {
         this.nome = nome;
         this.telefone = telefone;
-        this.endereco = endereco;
         this.email = email;
-        //this.tipo = tipo;
-
+        this.endereco = endereco;
     }
 
+    public Pessoa() {};
 
-    public Pessoa() {}
 
-
-    //Atributos fiscais:
-//    private String finalidade;
-//    private String consumidorFinal;
-//    private String contribuinteIcms;
-
-    public String getNome() {
-        return nome;
+    public String getNome() { return nome;
     }
 
     public void setNome(String nome) {
@@ -61,35 +54,24 @@ public class Pessoa {
         this.endereco = endereco;
     }
 
-    public String getDocumentoPrincipal() {
-        return "";
+    public abstract String getDocumentoPrincipal();
+
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                ", endereco=" + endereco +
+                ", tipoPessoa=" + tipoPessoa +
+                '}';
     }
 
-//    public String getTipo() {
-//        return tipo;
-//    }
+    public TipoPessoa getTipoPessoa() {
+        return tipoPessoa;
+    }
 
-//    public String getFinalidade() {
-//        return finalidade;
-//    }
-//
-//    public void setFinalidade(String finalidade) {
-//        this.finalidade = finalidade;
-//    }
-//
-//    public String getConsumidorFinal() {
-//        return consumidorFinal;
-//    }
-//
-//    public void setConsumidorFinal(String consumidorFinal) {
-//        this.consumidorFinal = consumidorFinal;
-//    }
-//
-//    public String getContribuinteIcms() {
-//        return contribuinteIcms;
-//    }
-//
-//    public void setContribuinteIcms(String contribuinteIcms) {
-//        this.contribuinteIcms = contribuinteIcms;
-//    }
+    public void setTipoPessoa(TipoPessoa tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
 }
