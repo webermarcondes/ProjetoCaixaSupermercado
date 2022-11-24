@@ -4,7 +4,9 @@ package Entidades;
 import Enums.Pago;
 import Enums.StatusVenda;
 import Enums.TipoPagamento;
+import Repository.ProdutoDAO;
 
+import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,22 +61,40 @@ public class Venda {
         }
     }
 
-    //public void adicionarItem(ItemVenda itens){
-    //    item.add(itens);
-    //}
-
-    public void adicionaItem(Integer codigo){
-        if(codigo.equals(itemVenda.getNumero())){
-            item.add(itemVenda);
-        }
-
-        else {
-            System.out.println("Produto não encontrado");
-        }
+    public void adicionarItem(ItemVenda itens){
+        item.add(itens);
     }
 
-    public void removerItem(ItemVenda itens){
-        item.remove(itens);
+    public void validaItem(){
+        boolean cadastrando = true;
+
+            while (cadastrando == true ){
+            Integer quantidadeProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite aquantidade do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
+            Integer codigoProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite o código do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
+
+            List<ItemVenda> itens = ProdutoDAO.buscarPorCodigo(codigoProduto);
+
+            for (ItemVenda itemAdicionar : itens) {
+                itemAdicionar.setQuantidade(quantidadeProduto);
+                itemAdicionar = new ItemVenda(codigoProduto,itemAdicionar.getNomeProduto(),itemAdicionar.getValorUnitario(),itemAdicionar.getQuantidade());
+
+                System.out.println("Item Adicionado a venda: " + itemAdicionar);
+                adicionarItem(itemAdicionar);
+            }
+
+            if(codigoProduto == 0) {
+                System.out.println("Tatal da venda: " + Total());
+                cadastrando = false;}
+        }
+
+    }
+
+    public void salvarItem(ItemVenda salvaItem){
+        item.add(salvaItem);
+    }
+
+    public void removerItem(ItemVenda listaItens){
+        item.add(listaItens);
     }
 
     public Double descontos(){
@@ -89,6 +109,7 @@ public class Venda {
         StringBuilder bd = new StringBuilder();
         setStatus(StatusVenda.INICIANDO);
         setStatus(StatusVenda.PROCESSANDO);
+        bd.append("\n");
         bd.append("====================================================\n");
         bd.append("                   CUPOM FISCAL \n");
         bd.append("====================================================\n");
@@ -106,12 +127,13 @@ public class Venda {
         bd.append("====================================================\n");
         bd.append("                  ITENS DA VENDA " + "\n");
         bd.append("\n");
-        int contador = 1;
+
         for (ItemVenda list : item){
-            list.setNumero(contador);
             bd.append(list + "\n");
-            contador++;
+
         }
+        bd.append("====================================================\n");
+        bd.append("\n");
         bd.append("Situação: " + getPago() + "\n");
         setStatus((StatusVenda.FINALIZANDO));
         bd.append("Total da Venda:                            R$" + Total());

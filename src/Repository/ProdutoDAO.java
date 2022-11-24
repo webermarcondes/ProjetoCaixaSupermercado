@@ -8,6 +8,10 @@ import java.util.List;
 public class ProdutoDAO {
     static List<ItemVenda> produtos = new ArrayList<>();
 
+    public ProdutoDAO() {
+
+    }
+
     public static void salvar(ItemVenda produto) {
         produtos.add(produto);
     }
@@ -21,6 +25,16 @@ public class ProdutoDAO {
         List<ItemVenda> produtosFiltrados = new ArrayList<>();
         for (ItemVenda produto : produtos) {
             if (produto.getNomeProduto().contains(descricao)) {
+                produtosFiltrados.add(produto);
+            }
+        }
+        return produtosFiltrados;
+    }
+
+    public static List<ItemVenda> buscarPorCodigo(Object codigo) {
+        List<ItemVenda> produtosFiltrados = new ArrayList<>();
+        for (ItemVenda produto : produtos) {
+            if (produto.getNumero().equals(codigo)) {
                 produtosFiltrados.add(produto);
             }
         }

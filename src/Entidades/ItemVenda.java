@@ -11,10 +11,18 @@ public class ItemVenda {
     private Double SubTotal;
     private List<ItemVenda> item = new ArrayList<>();
 
-
     public ItemVenda(){
 
     }
+
+    public ItemVenda(ItemVenda itemAdicionar) {
+        item.add(itemAdicionar);
+    }
+
+    public ItemVenda(List<ItemVenda> buscarPorCodigo) {
+
+    }
+
 
     public Double subTotal(){
         return Quantidade * ValorUnitario;
@@ -22,22 +30,16 @@ public class ItemVenda {
 
     @Override
     public String toString(){
-        return Numero + " - " + NomeProduto +"       "+ Quantidade+"UN X " + ValorUnitario + "      Vl.Total. R$" + subTotal();
+        return Numero + " - " + NomeProduto +"       "+ Quantidade + " UN X " + ValorUnitario + "      Vl.Total. R$ " + subTotal();
     }
 
-    public ItemVenda(String nomeProduto, Double valorUnitario, Integer quantidade) {
+    public ItemVenda(Integer numero,String nomeProduto, Double valorUnitario, Integer quantidade) {
+        Numero = numero;
         NomeProduto = nomeProduto;
         ValorUnitario = valorUnitario;
         Quantidade = quantidade;
     }
 
-    public void cadastrarProduto(String nomeProduto, Double valorUnitario, Integer quantidade){
-        ItemVenda cadastro = new ItemVenda();
-        cadastro.NomeProduto = nomeProduto;
-        cadastro.ValorUnitario = valorUnitario;
-        cadastro.Quantidade = quantidade;
-        item.add(cadastro);
-    }
 
     public void mostrarItens(){
         for(ItemVenda cadas : item){

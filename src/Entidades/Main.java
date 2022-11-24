@@ -1,11 +1,16 @@
 package Entidades;
+import Enums.TipoPagamento;
 import Enums.TipoPessoa;
+import Forms.RelatorioItensForms;
 import Repository.*;
 
 import javax.swing.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+
 import Exceptions.*;
 
 public class Main {
@@ -29,7 +34,7 @@ public class Main {
 
     private static void telaInicial() throws SaidaException{
 
-        String[] opcoesMenuCadastro = {"Cadastrar Cliente", "Cadastrar Produto", "Venda"};
+        String[] opcoesMenuCadastro = {"Cadastrar Cliente", "Cadastrar Produto", "Venda","Relatorios"};
         int menuCadastro = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
                 "Menu Cadastros",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesMenuCadastro, opcoesMenuCadastro[0]);
@@ -67,17 +72,38 @@ public class Main {
                 break;
 
             case 2:
-                realizarVenda();
+                Venda venda = realizarVenda();
+                VendaDAO.salvar(venda);
                 telaInicial();
+                break;
+
+            case 3:
+                String[] relatorios = {"Relatorio Produtos", "Relatorio Pessoas"};
+
+                Integer relatorioOpcao = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
+                        "Relatorios",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, relatorios, relatorios[0]);
+
+                if(relatorioOpcao == 0){
+                    chamarRelatorioItens();
+                }
                 break;
         }
     }
 
-    private static Object chamaSelecaoUsuario() {
+
+    private static void menuDeRelatorios(){
+        chamarRelatorioItens();
+    }
+    private static Object chamaSelecaoUsuario() throws SaidaException{
         Object[] selectionValues = UsuarioDAO.findUsuariosSistemaInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o usuario?",
-                "SeguradoraAPP", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "CaixaAPP", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+
+        if (selection == null) {
+            throw new SaidaException();
+        }
         return selection;
     }
 
@@ -128,48 +154,82 @@ public class Main {
 
     }
 
-
-
     private static Endereco cadastraEndereco() {
+
         Endereco endereco = new Endereco();
 
         endereco.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro: "));
-        endereco.setCep(JOptionPane.showInputDialog(null, "Digite o número do Cep: "));
+        endereco.setRua(JOptionPane.showInputDialog(null, "Rua: "));
         endereco.setCidade(JOptionPane.showInputDialog(null, "Digite o nome da cidade: "));
-        endereco.setComplemento(JOptionPane.showInputDialog(null, "Digite o complemento: "));
-        endereco.setMunicipio(JOptionPane.showInputDialog(null, "Digite o nome do Munícipio"));
-        endereco.setNumero(Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número da residência: ")));
-        endereco.setUf(JOptionPane.showInputDialog(null, "Digite a Uf"));
-
+        endereco.setNumero(Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do endereço: ")));
         return endereco;
     }
 
     private static ItemVenda cadastroProduto() throws SaidaException{
-        boolean cadastro = true;
+
+        String nome = JOptionPane.showInputDialog(null, "Digite o nome do produto:");
+        Double valor = Double.parseDouble(JOptionPane.showInputDialog(null, "Valor"));
+        Integer quantidade = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantidade"));
+        Integer numero = Integer.valueOf(JOptionPane.showInputDialog(null, "Número"));
+
         ItemVenda cadastroItem = new ItemVenda();
-        while (cadastro == true) {
 
-            String nome = JOptionPane.showInputDialog(null, "Digite o nome do produto:");
-            Double valor = Double.parseDouble(JOptionPane.showInputDialog(null, "Valor"));
-            Integer quantidade = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantidade"));
-            cadastroItem.cadastrarProduto(nome, valor, quantidade);
+        cadastroItem.setNumero(numero);
+        cadastroItem.setNomeProduto(nome);
+        cadastroItem.setValorUnitario(valor);
+        cadastroItem.setQuantidade(quantidade);
 
-            Integer cadastroPergunta = Integer.parseInt(JOptionPane.showInputDialog(null,"Deseja continuar cadastrando? \n 1 - Sim\n 2 - Não "));
-            if (cadastroPergunta == 2){
-                cadastro = false;
-            }
-        }
-        cadastroItem.mostrarItens();
-        telaInicial();
         return cadastroItem;
     }
 
-    private static void realizarVenda(){
-        Venda venda = new Venda();
+    private static Venda realizarVenda(){
 
-        Integer adicionarProduto = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o código do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
-        venda.adicionaItem(adicionarProduto);
+        System.out.println("Venda Iniciada!!");
+        Venda venda = new Venda();
+        venda.validaItem();
+
+        String[] opcoesMenuFormasPagamento = {"Dinheiro", "Credito", "Debito"};
+        int menuPagamento = JOptionPane.showOptionDialog(null, "Forma de Pagamento:",
+                "Menu Forma de Pagamento",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesMenuFormasPagamento, opcoesMenuFormasPagamento[0]);
+
+        if (menuPagamento == 0){
+
+            Double valorDinheiro = Double.valueOf(JOptionPane.showInputDialog(null, "Digite o valor em dinheiro", "Balcão", JOptionPane.QUESTION_MESSAGE));
+            Double troco = venda.Total() - valorDinheiro;
+
+            if (troco > 0){
+                int menuPagamentoTroco = JOptionPane.showOptionDialog(null, "Forma de Pagamento:",
+                        "Menu Forma de Pagamento",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesMenuFormasPagamento, opcoesMenuFormasPagamento[1]);
+                troco -= troco;
+            }else if (troco < 0){
+                System.out.println("Troco para devolver: " + troco);
+            }
+
+            venda.setTipoPagamento(TipoPagamento.DINHEIRO);
+        }
+
+        else if(menuPagamento == 1){
+            venda.setTipoPagamento(TipoPagamento.CREDITO);
+        }
+
+        else{
+            venda.setTipoPagamento(TipoPagamento.DEBITO);
+        }
 
         System.out.println(venda.cupomFiscal());
+
+        return venda;
+    }
+
+    public static ProdutoDAO getPessoaDAO() {
+        ProdutoDAO itensVenda = new ProdutoDAO();
+        return itensVenda;
+    }
+
+    private static void chamarRelatorioItens(){
+        List<ItemVenda> itens = getPessoaDAO().buscarTodos();
+        RelatorioItensForms.emitirRelatorio(itens);
     }
 }
