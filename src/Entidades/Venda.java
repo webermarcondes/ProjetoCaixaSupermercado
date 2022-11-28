@@ -1,9 +1,8 @@
 package Entidades;
-
-
 import Enums.Pago;
 import Enums.StatusVenda;
 import Enums.TipoPagamento;
+import Exceptions.SaidaException;
 import Repository.ProdutoDAO;
 
 import javax.swing.*;
@@ -65,28 +64,31 @@ public class Venda {
         item.add(itens);
     }
 
-    public void validaItem(){
+    public void validaItem() throws SaidaException {
         boolean cadastrando = true;
 
-            while (cadastrando == true ){
-            Integer quantidadeProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite aquantidade do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
-            Integer codigoProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite o código do produto:", "Balcão", JOptionPane.QUESTION_MESSAGE));
 
-            List<ItemVenda> itens = ProdutoDAO.buscarPorCodigo(codigoProduto);
+                while (cadastrando == true) {
+                    try {
+                        Integer quantidadeProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite aquantidade do produto: \n 0 - Subtotal", "Balcão", JOptionPane.QUESTION_MESSAGE));
+                        if (quantidadeProduto == 0) {System.out.println("Total Venda: " + Total()); break;}
+                        Integer codigoProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite o código do produto: \n 0 - Subtotal", "Balcão", JOptionPane.QUESTION_MESSAGE));
+                        if(codigoProduto == 0){System.out.println("Total Venda: " + Total()); break;}
 
-            for (ItemVenda itemAdicionar : itens) {
-                itemAdicionar.setQuantidade(quantidadeProduto);
-                itemAdicionar = new ItemVenda(codigoProduto,itemAdicionar.getNomeProduto(),itemAdicionar.getValorUnitario(),itemAdicionar.getQuantidade());
+                        List<ItemVenda> itens = ProdutoDAO.buscarPorCodigo(codigoProduto);
 
-                System.out.println("Item Adicionado a venda: " + itemAdicionar);
-                adicionarItem(itemAdicionar);
-            }
+                        for (ItemVenda itemAdicionar : itens) {
+                            itemAdicionar.setQuantidade(quantidadeProduto);
+                            itemAdicionar = new ItemVenda(codigoProduto, itemAdicionar.getNomeProduto(), itemAdicionar.getValorUnitario(), itemAdicionar.getQuantidade());
 
-            if(codigoProduto == 0) {
-                System.out.println("Tatal da venda: " + Total());
-                cadastrando = false;}
-        }
-
+                            System.out.println("Item Adicionado a venda: " + itemAdicionar);
+                            adicionarItem(itemAdicionar);
+                        }
+                    }
+                    catch (NumberFormatException b ){
+                        Main.telaInicial();
+                    }
+                }
     }
 
     public void salvarItem(ItemVenda salvaItem){
@@ -114,9 +116,11 @@ public class Venda {
         bd.append("                   CUPOM FISCAL \n");
         bd.append("====================================================\n");
         if(cliente!=null){
-            bd.append("Cliente: " + cliente + "\n");
+            bd.append("Cliente: " + cliente.getPessoa().getNome() + "\n");
+            bd.append("CPF/CNPJ: " + cliente.getPessoa().getDocumentoPrincipal() + "\n");
+
         }else {
-            bd.append("Cliente: não cadastrado \n");
+            bd.append("Cliente: Consumidor final\n");
         }
         bd.append("Número do pedido:                         "+ Numero+ "\n");
         bd.append("Data da Compra:                           " + sdf.format(now) + "\n");
@@ -138,6 +142,13 @@ public class Venda {
         setStatus((StatusVenda.FINALIZANDO));
         bd.append("Total da Venda:                            R$" + Total());
         return bd.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Venda{" +
+                "status=" + status +
+                '}';
     }
 
     public List<ItemVenda> getItem() {
@@ -195,4 +206,5 @@ public class Venda {
     public void setParcelas(Integer parcelas) {
         this.Parcelas = parcelas;
     }
+
 }
