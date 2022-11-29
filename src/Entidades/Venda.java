@@ -1,5 +1,5 @@
 package Entidades;
-import Enums.Pago;
+import Enums.Situacao;
 import Enums.StatusVenda;
 import Enums.TipoPagamento;
 import Exceptions.SaidaException;
@@ -7,18 +7,13 @@ import Repository.ProdutoDAO;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Venda {
 
     private List<ItemVenda> item = new ArrayList<>();
-
-    private ItemVenda itemVenda;
     private Cliente cliente;
-    private Pago pago;
+    private Situacao pago;
     private StatusVenda status;
     private TipoPagamento tipoPagamento;
     private Date now = new Date();
@@ -43,7 +38,6 @@ public class Venda {
         }
         return soma;
     }
-
 
     public void validacao(){
 
@@ -70,10 +64,14 @@ public class Venda {
 
                 while (cadastrando == true) {
                     try {
-                        Integer quantidadeProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite aquantidade do produto: \n 0 - Subtotal", "Balcão", JOptionPane.QUESTION_MESSAGE));
-                        if (quantidadeProduto == 0) {System.out.println("Total Venda: " + Total()); break;}
+
                         Integer codigoProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite o código do produto: \n 0 - Subtotal", "Balcão", JOptionPane.QUESTION_MESSAGE));
                         if(codigoProduto == 0){System.out.println("Total Venda: " + Total()); break;}
+
+
+                        Integer quantidadeProduto = Integer.valueOf(JOptionPane.showInputDialog(null, "Digite a quantidade do produto: \n 0 - Subtotal", "Balcão", JOptionPane.QUESTION_MESSAGE));
+                        if (quantidadeProduto == 0) {System.out.println("Total Venda: " + Total()); break;}
+
 
                         List<ItemVenda> itens = ProdutoDAO.buscarPorCodigo(codigoProduto);
 
@@ -122,7 +120,9 @@ public class Venda {
         }else {
             bd.append("Cliente: Consumidor final\n");
         }
-        bd.append("Número do pedido:                         "+ Numero+ "\n");
+        Random numero = new Random();
+        Numero = numero.nextInt(100);
+        bd.append("Número do pedido:                         "+ Numero + "\n");
         bd.append("Data da Compra:                           " + sdf.format(now) + "\n");
         setStatus(StatusVenda.IMPRIMINDO);
         bd.append("Status:                                   " + getStatus() + "\n");
@@ -144,12 +144,6 @@ public class Venda {
         return bd.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Venda{" +
-                "status=" + status +
-                '}';
-    }
 
     public List<ItemVenda> getItem() {
         return item;
@@ -163,11 +157,11 @@ public class Venda {
         this.cliente = cliente;
     }
 
-    public Pago getPago() {
+    public Situacao getPago() {
         return pago;
     }
 
-    public void setPago(Pago pago) {
+    public void setPago(Situacao pago) {
         this.pago = pago;
     }
 

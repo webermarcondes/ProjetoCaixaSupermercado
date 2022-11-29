@@ -9,12 +9,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import  FormatosDocumento.FormatoCpf;
 
 public class PessoaFisicaDAO {
 
     static List<PessoaFisica> pessoasF = new ArrayList<>();
 
     public static void carregarDados() {
+        PessoaFisica pf2 = new PessoaFisica("Cliente diversos",
+                "null",
+                "null",
+                new Endereco("null", "null", "null", null),
+                "null",
+                LocalDate.now());
+
+        salvar(pf2);
+
         PessoaFisica pf = new PessoaFisica("Weber",
                 "40028922",
                 "weberM@gmail.com",
@@ -32,6 +42,7 @@ public class PessoaFisicaDAO {
                 LocalDate.now());
 
         salvar(pf1);
+
     }
 
 
@@ -52,15 +63,17 @@ public class PessoaFisicaDAO {
         String cpfAntigo = pf.getCpf();
         String cpfNovo;
         while (true) {
-           cpfNovo = JOptionPane.showInputDialog(null, "Digite o cpf", cpfAntigo);
+           cpfNovo = JOptionPane.showInputDialog(null, "Digite o cpf no formato ***.***.***-**", cpfAntigo);
 
            if (cpfNovo.length() > 0 && buscarPorCpf(cpfNovo) != null && !cpfNovo.equals(cpfAntigo)) {
                 JOptionPane.showMessageDialog(null, "Já existe um cadastro com este Cpf", "", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
-           else if (cpfNovo.length() == 0) {
-             JOptionPane.showMessageDialog(null, "Erro! Cpf é um dado obrigatório");
-             continue;
+
+
+           else if (!FormatoCpf.verificarFormato(cpfNovo)) {
+               JOptionPane.showMessageDialog(null, "Erro! o cpf informado deve estar no formato ***.***.***-**", "Erro de formato de cpf", JOptionPane.ERROR_MESSAGE);
+               continue;
            }
 
             break;
@@ -79,9 +92,9 @@ public class PessoaFisicaDAO {
         }
 
         Endereco endereco = pf.getEndereco();
-        endereco.setRua(JOptionPane.showInputDialog(null, "Digite o nome da Rua", endereco.getRua()));
-        endereco.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do Bairro", endereco.getBairro()));
-        endereco.setCidade(JOptionPane.showInputDialog(null, "Digite o nome da Cidade", endereco.getCidade()));
+        endereco.setRua(JOptionPane.showInputDialog(null, "Digite o nome da rua:", endereco.getRua()));
+        endereco.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro:", endereco.getBairro()));
+        endereco.setCidade(JOptionPane.showInputDialog(null, "Digite o nome da cidade:", endereco.getCidade()));
 
         while (true) {
             try {
@@ -122,13 +135,14 @@ public class PessoaFisicaDAO {
     }
 
     public static PessoaFisica buscarPorCpf(String cpf) {
-
+        PessoaFisica pfFiltrada = null;
         for (PessoaFisica pf: pessoasF) {
             if (pf.getCpf().equals(cpf)) {
-                return pf;
+                pfFiltrada = pf;
             }
         }
 
-        return null;
+
+        return pfFiltrada;
     }
 }

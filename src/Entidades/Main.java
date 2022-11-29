@@ -1,4 +1,5 @@
 package Entidades;
+import Enums.StatusVenda;
 import Enums.TipoPagamento;
 import Enums.TipoPessoa;
 import Forms.RelatorioClienteForms;
@@ -8,10 +9,12 @@ import Repository.*;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import Exceptions.*;
 import FormatosDocumento.*;
+
 
 
 
@@ -22,6 +25,7 @@ public class Main {
 
         PessoaFisicaDAO.carregarDados();
         PessoaJuridicaDAO.carregarDados();
+        ProdutoDAO.produtoPreCarregado();
 
         pessoas.addAll(PessoaFisicaDAO.buscarTodos());
         pessoas.addAll(PessoaJuridicaDAO.buscarTodos());
@@ -37,7 +41,7 @@ public class Main {
 
     public static void telaInicial() throws SaidaException {
 
-        String[] opcoesMenuCadastro = {"Cadastros", "Venda","Relatorios", "Sair"};
+        String[] opcoesMenuCadastro = {"Cadastros", "Venda","Relatorios","Notas Fiscais", "Sair"};
         int menuCadastro = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
                 "Tela Inicial",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoesMenuCadastro, opcoesMenuCadastro[0]);
@@ -56,7 +60,7 @@ public class Main {
                 break;
 
             case 3:
-
+                menuNotsFiscais();
                 break;
         }
     }
@@ -88,7 +92,6 @@ public class Main {
                 null,
                 opcoes,
                 opcoes[0]);
-
 
         if (op == 0) {  //Cadastro
             Pessoa pessoa = cadastroCliente(tipoPessoa);
@@ -211,18 +214,19 @@ public class Main {
                 "Relatorios",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, relatorios, relatorios[0]);
 
-        if(relatorioOpcao == 0){
-            chamarRelatorioItens();
-
-        }else if (relatorioOpcao == 1){
-            chamarRelatorioClientes();
-
-        }else if(relatorioOpcao == 2 ){
-            chamarRelatorioVendas();
-        }
-
-        else if (relatorioOpcao == 3) {
-            telaInicial();
+        switch (relatorioOpcao){
+            case 0:
+                chamarRelatorioItens();
+                break;
+            case 1:
+                chamarRelatorioClientes();
+                break;
+            case 2:
+                chamarRelatorioVendas();
+                break;
+            case 3:
+                telaInicial();
+                break;
         }
     }
 
@@ -260,15 +264,17 @@ public class Main {
 
                 pessoaFisica.setNome(JOptionPane.showInputDialog(null, "Digite o nome: "));
                 pessoaFisica.setTelefone(JOptionPane.showInputDialog(null, "Digite o telefone: "));
-                while (true) {
-                    pessoaFisica.setCpf(JOptionPane.showInputDialog(null, "Digite o cpf no formato ***.***.***-**"));
 
-                    if (PessoaFisicaDAO.buscarPorCpf(pessoaFisica.getCpf()) != null && FormatoCpf.verificarFormato(pessoaFisica.getCpf()) ) {
+                String cpf;
+                while (true) {
+                    cpf = JOptionPane.showInputDialog(null, "Digite o cpf no formato ***.***.***-**");
+
+                    if (PessoaFisicaDAO.buscarPorCpf(cpf) != null && FormatoCpf.verificarFormato(cpf) ) {
                         JOptionPane.showMessageDialog(null, "Já existe um cadastro com este Cpf", "", JOptionPane.ERROR_MESSAGE);
                         continue;
                     }
 
-                    else if (!FormatoCpf.verificarFormato(pessoaFisica.getCpf())) {
+                    else if (!FormatoCpf.verificarFormato(cpf)) {
                         JOptionPane.showMessageDialog(null, "Erro! o cpf deve ser digitado no formato ***.***.***-**", "Erro de formato de Cpf", JOptionPane.ERROR_MESSAGE);
                         continue;
                     }
@@ -276,8 +282,18 @@ public class Main {
 
                     break;
                 }
+
                 pessoaFisica.setEmail(JOptionPane.showInputDialog(null, "Digite o e-mail: "));
-                pessoaFisica.setDataNascimento(LocalDate.parse(JOptionPane.showInputDialog(null, "Digite a data de nascimento"), formatter));
+
+                while (true) {
+                    try {
+                        pessoaFisica.setDataNascimento(LocalDate.parse(JOptionPane.showInputDialog(null, "Digite a data de nascimento no formato (dd/MM/yyyy)"), formatter));
+                        break;
+                    } catch (DateTimeParseException e) {
+                        JOptionPane.showMessageDialog(null, "Erro! A data informada não esta no formato correto, tente novamente", "Erro de formato de data", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
                 pessoaFisica.setEndereco(cadastraEndereco());
 
                 pessoaFisica.setTipoPessoa(TipoPessoa.FISICA);
@@ -288,9 +304,10 @@ public class Main {
 
                 pessoaJuridica.setNome(JOptionPane.showInputDialog(null, "Digite o nome: "));
                 pessoaJuridica.setRazaoSocial(JOptionPane.showInputDialog(null, "Digite a razão social: "));
+
                 while (true) {
                     pessoaJuridica.setCnpj(JOptionPane.showInputDialog(null, "Digite o cnpj no formato **.***.***/0001-**"));
-                    System.out.println(FormatoCnpj.verificarFormato(pessoaJuridica.getCnpj()));
+
                     if (PessoaJuridicaDAO.buscarPorCnpj(pessoaJuridica.getCnpj()) != null && FormatoCnpj.verificarFormato(pessoaJuridica.getCnpj())) {
                         JOptionPane.showMessageDialog(null, "Erro! já existe um cadastro com este cnpj", "Cadastro", JOptionPane.ERROR_MESSAGE);
                         continue;
@@ -320,9 +337,19 @@ public class Main {
         Endereco endereco = new Endereco();
 
         endereco.setBairro(JOptionPane.showInputDialog(null, "Digite o nome do bairro: "));
-        endereco.setRua(JOptionPane.showInputDialog(null, "Rua: "));
+        endereco.setRua(JOptionPane.showInputDialog(null, "Digite o nome da rua:"));
         endereco.setCidade(JOptionPane.showInputDialog(null, "Digite o nome da cidade: "));
-        endereco.setNumero(Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do endereço: ")));
+
+        while (true) {
+            try {
+                endereco.setNumero(Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do endereço", endereco.getNumero())));
+                break;
+            }
+
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro! informe apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
         return endereco;
     }
@@ -349,20 +376,16 @@ public class Main {
 
         }return null;
     }
-    private static Cliente chamaClientes() throws SaidaException {
+    private static Cliente chamaClientes(){
 
         Object[] selectionValues = getClienteDAO().findClientesInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o cliente do seguro?",
-                "SeguradoraAPP", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "Clientes", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         List<Cliente> clientes = getClienteDAO().buscarPorNome((String) selection);
         return clientes.get(0);
-        //if (selection == null) {
-        //    throw new SaidaException();
-        //}
 
     }
-
 
     private static void realizarVenda() throws SaidaException {
 
@@ -372,7 +395,6 @@ public class Main {
         venda.setCliente(chamaClientes());
 
         venda.validaItem();
-
 
 
         String[] opcoesMenuFormasPagamento = {"Dinheiro", "Credito", "Debito"};
@@ -422,6 +444,7 @@ public class Main {
         switch(menu){
             case 0:
                 ItemVenda produto = cadastroProduto();
+
                 ProdutoDAO.salvar(produto);
                 telaInicial();
                 break;
@@ -435,6 +458,54 @@ public class Main {
                 telaInicial();
                 break;
         }
+    }
+
+    private static void menuNotsFiscais() throws SaidaException {
+        String[] notas = {"Nota Fiscal", "Nota Devolução", "Voltar"};
+        Integer notasSelecao = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
+                "Notas fiscais",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, notas, notas[0]);
+
+        switch (notasSelecao){
+            case 0:
+                emissaoNotaFiscal(chamaVendas());
+                menuNotsFiscais();
+                break;
+            case 1:
+                emissaoNotaFiscalDevolucao(chamaVendas());
+                menuNotsFiscais();
+                break;
+            case 2:
+                telaInicial();
+                break;
+        }
+    }
+
+    private static void emissaoNotaFiscal(Venda venda){
+        Nfe nfe = new Nfe();
+
+        nfe.setVenda(nfe.validarCliente(venda));
+        System.out.println(nfe.notaFiscal());
+
+    }
+
+    private static void emissaoNotaFiscalDevolucao(Venda venda){
+        Nfe nfe = new Nfe();
+
+        nfe.setVenda(nfe.validarCliente(venda));
+        venda.setStatus(StatusVenda.DEVOLVIDA);
+        System.out.println(nfe.notaFiscalDevolucao());
+    }
+
+    private static Venda chamaVendas() {
+
+        Object[] selectionValues = getVendaDAO().findVendaInArray();
+        Integer initialSelection = (Integer) selectionValues[0];
+        Object selection = JOptionPane.showInputDialog(null, "Selecione a venda",
+                "Vendas", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+        List<Venda> venda = getVendaDAO().buscarPorCodigo(selection);
+
+            return venda.get(0);
     }
 
     public static ProdutoDAO getProdutoDAO() {
@@ -466,6 +537,4 @@ public class Main {
         List<Venda> venda = getVendaDAO().buscarTodos();
         RelatorioVendaForms.emitirRelatorio(venda);
     }
-
-
 }

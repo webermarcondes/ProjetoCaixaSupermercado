@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import FormatosDocumento.FormatoCnpj;
 
 public class PessoaJuridicaDAO {
 
@@ -55,14 +56,15 @@ public class PessoaJuridicaDAO {
         String cnpjAntigo = pj.getCnpj();
         String cnpjNovo;
         while (true) {
-            cnpjNovo = JOptionPane.showInputDialog(null, "Digite o cnpj", cnpjAntigo);
+            cnpjNovo = JOptionPane.showInputDialog(null, "Digite o cnpj no formato **.***.***/0001-**", cnpjAntigo);
 
             if (cnpjNovo.length() > 0 && buscarPorCnpj(cnpjNovo) != null && !cnpjNovo.equals(cnpjAntigo)) {
                 JOptionPane.showMessageDialog(null, "Já existe um cadastro com este cnpj", "", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
-            else if (cnpjNovo.length() == 0) {
-                JOptionPane.showMessageDialog(null, "Erro! cnpj é um dado obrigatório");
+
+            else if(!FormatoCnpj.verificarFormato(cnpjNovo)) {
+                JOptionPane.showMessageDialog(null, "Erro! o cnpj deve ser informado no formato **.***.***/0001-**", "Erro de formato de cnpj", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
@@ -71,7 +73,6 @@ public class PessoaJuridicaDAO {
         pj.setCnpj(cnpjNovo);
 
         pj.setEmail(JOptionPane.showInputDialog(null, "Digite o e-mail: ", pj.getEmail()));
-
 
 
         Endereco endereco = pj.getEndereco();
@@ -118,13 +119,13 @@ public class PessoaJuridicaDAO {
     }
 
     public static PessoaJuridica buscarPorCnpj (String cnpj) {
-
-        for (PessoaJuridica pf: pessoasJ) {
-            if (pf.getCnpj().equals(cnpj)) {
-                return pf;
+        PessoaJuridica pjFiltrada = null;
+        for (PessoaJuridica pj: pessoasJ) {
+            if (pj.getCnpj().equals(cnpj)) {
+                pjFiltrada = pj;
             }
         }
 
-        return null;
+        return pjFiltrada;
     }
 }

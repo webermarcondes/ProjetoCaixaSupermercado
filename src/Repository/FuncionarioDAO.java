@@ -19,7 +19,7 @@ public class FuncionarioDAO {
                 "40028922",
                 "weberM@gmail.com",
                 new Endereco("Centro", "Criciuma", "Av.centenario", 10),
-                "525789123-32",
+                "525.759.228-18",
                 LocalDate.now());
 
 
@@ -33,7 +33,7 @@ public class FuncionarioDAO {
                 "12345678",
                 "tulioGabrielDm@gmail.com",
                 new Endereco("São luis", "Criciuma", "Washington Luis", 15),
-                "525759324-88",
+                "123.456.789-10",
                 LocalDate.now());
 
         funcionarios.add(new Funcionario(funcionarios.size() + 1,
